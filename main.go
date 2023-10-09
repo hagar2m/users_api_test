@@ -47,14 +47,19 @@ func main() {
 		conn.Close()
 		// defer db.Close()
 	}()
-
+	// Brower //
 	router.HandleFunc("/", welcome)
-	router.HandleFunc("/signup", signup)
-	router.Post("/users", apiConfig.HandlerCreateUserFromAPi)
-	// router.HandleFunc("/createUser", apiConfig.HandlerCreateUserFromBrowser)
-	router.Post("/users-gorm", gormDb.HandlerCreateUserFromAPi)
-	router.Get("/users", gormDb.HandlerGetAllUsers)
 	// router.HandleFunc("/signin", signin)
+	router.HandleFunc("/signup", signup)
+	router.HandleFunc("/createUserForm", apiConfig.HandlerCreateUserFromBrowser)
+
+	// Apis
+	router.Post("/createUser", gormDb.HandlerCreateUserFromAPi)
+	router.Get("/users", gormDb.HandlerGetAllUsers)
+	router.Get("/users/{id:[0-9]+}", gormDb.HandlerGetUserById)
+	// router.Get("/users/{id}", gormDb.HandlerGetUserById)
+	router.Patch("/users/{id:[0-9]+}", gormDb.HandlerEditUser)
+	router.Delete("/user/{id:[0-9]+}", gormDb.HandlerDeleteUser)
 }
 
 func welcome(w http.ResponseWriter, r *http.Request) {
