@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"html/template"
 	"log"
@@ -28,10 +27,6 @@ func main() {
 		DB: db,
 	}
 
-	conn, err := sql.Open("mysql", dbURL)
-	apiConfig := handler.APIConfig{
-		DB: conn,
-	}
 	router := chi.NewRouter()
 
 	defer func() {
@@ -44,14 +39,12 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		conn.Close()
 		// defer db.Close()
 	}()
 	// Brower //
 	router.HandleFunc("/", welcome)
 	// router.HandleFunc("/signin", signin)
 	router.HandleFunc("/signup", signup)
-	router.HandleFunc("/createUserForm", apiConfig.HandlerCreateUserFromBrowser)
 
 	// Apis
 	router.Post("/createUser", gormDb.HandlerCreateUserFromAPi)

@@ -135,6 +135,7 @@ func (gormDb *GormDB) HandlerEditUser(w http.ResponseWriter, r *http.Request) {
 		responseWithJson(w, http.StatusOK, user)
 	}
 }
+
 func (gormDb *GormDB) HandlerDeleteUser(w http.ResponseWriter, r *http.Request) {
 	idUint, err := strconv.ParseUint(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
