@@ -16,3 +16,7 @@ func IsValidEmail(email string) bool {
 func IsValidPassword(password string) bool {
     return len(password) > 4
 }
+
+func IsValidText(txt string) bool {
+    return len(txt) > 5
+}

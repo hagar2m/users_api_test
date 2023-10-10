@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-	"html/template"
 	"log"
 	"net/http"
 	"os"
@@ -41,44 +39,9 @@ func main() {
 		}
 		// defer db.Close()
 	}()
-	// Brower //
-	router.HandleFunc("/", welcome)
-	// router.HandleFunc("/signin", signin)
-	router.HandleFunc("/signup", signup)
 
-	// Apis
-	router.Post("/createUser", gormDb.HandlerCreateUserFromAPi)
-	router.Get("/users", gormDb.HandlerGetAllUsers)
-	router.Get("/users/{id:[0-9]+}", gormDb.HandlerGetUserById)
-	// router.Get("/users/{id}", gormDb.HandlerGetUserById)
-	router.Patch("/users/{id:[0-9]+}", gormDb.HandlerEditUser)
-	router.Delete("/user/{id:[0-9]+}", gormDb.HandlerDeleteUser)
+	// Pass the router and database connection to SetupRoutes
+	SetupRoutes(router, &gormDb)
 }
 
-func welcome(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("index.html"))
-	err := tmpl.Execute(w, nil)
 
-	if err != nil {
-		fmt.Println("error->", err.Error())
-	}
-}
-func signup(writer http.ResponseWriter, request *http.Request) {
-	tmpl := template.Must(template.ParseFiles("register.html"))
-	tmpl.Execute(writer, nil)
-}
-
-// func signin(writer http.ResponseWriter, request *http.Request) {
-// 	username := request.FormValue("exampleInputEmail1")
-// 	password := request.FormValue("exampleInputPassword1")
-
-// 	passwordFromDB := ""
-// 	query := `SELECT password FROM users WHERE username = ?`
-// 	err := db.QueryRow(query, username).Scan(&passwordFromDB)
-// 	print(err)
-// 	if password == passwordFromDB {
-// 		fmt.Fprintf(writer, "Congratulations "+username+" You are successfully signed in.")
-// 	} else {
-// 		fmt.Fprintf(writer, "Oops! Username and password did not match.")
-// 	}
-// }
