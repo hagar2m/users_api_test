@@ -19,6 +19,7 @@ func BrowserRoutes(router *chi.Mux, db *handler.GormDB) {
 
 func UsersAPIRoutes(router *chi.Mux, db *handler.GormDB) {
 	router.Post("/createUser", db.HandlerCreateUserFromAPi)
+	router.Post("/signin", db.HandlerSignInAPi)
 	router.Get("/users", db.HandlerGetAllUsers)
 	router.Get("/users/{id:[0-9]+}", db.HandlerGetUserById)
 	// router.HandleFunc("/users/{id}", db.HandlerGetUserById)
