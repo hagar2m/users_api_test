@@ -1,4 +1,4 @@
-package services
+package post
 
 import (
 	"net/http"

@@ -1,14 +1,18 @@
 package validation
 
-import "com.test.users_api_test/models"
+import (
+	"fmt"
 
-func ValidateEditing(usr *models.UserTable, updatedModel *models.UserTable) (bool, string) {
+	"com.test.users_api_test/models"
+)
+
+func ValidateEditing(usr *models.UserTable, updatedModel *models.UserTable) (bool, error) {
 	if updatedModel.Name != "" {
 		usr.Name = updatedModel.Name
 	}
 
 	if updatedModel.Email != "" && !IsValidEmail(updatedModel.Email) {
-		return false, "Enter a valid mail"
+		return false, fmt.Errorf("Enter a valid mail")
 	} else {
 		usr.Email = updatedModel.Email
 	}
@@ -16,7 +20,7 @@ func ValidateEditing(usr *models.UserTable, updatedModel *models.UserTable) (boo
 	if updatedModel.Password != "" && !IsValidPassword(updatedModel.Password) {
 		usr.Password = updatedModel.Password
 	}
-	return true, ""
+	return true, nil
 }
 
 func IsValidCreateUser(user models.UserTable) (bool, string) {

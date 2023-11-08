@@ -1,4 +1,4 @@
-package app
+package database
 
 import (
 	"log"
@@ -12,10 +12,10 @@ import (
 
 type App struct {
 	Router *gin.RouterGroup
-	DB *gorm.DB
+	DB     *gorm.DB
 }
 
-// var DB *gorm.DB
+var DB *gorm.DB
 
 func LoadEnv() string {
 	godotenv.Load(".env")
@@ -27,6 +27,7 @@ func CreateNewSqlClient(DBURL string) *App {
 	if err != nil {
 		log.Fatal("can't connect to database")
 	}
+	DB = db
 	return &App{
 		DB: db,
 	}

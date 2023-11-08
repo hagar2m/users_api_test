@@ -3,26 +3,17 @@ package routing
 import (
 	"os"
 
-	"com.test.users_api_test/app"
-	"com.test.users_api_test/handler"
-	"com.test.users_api_test/services"
 	"github.com/gin-gonic/gin"
 )
 
-func StartRouting(appConfig *app.App) {
-	userService := services.NewUserService(appConfig)
-	userHandler := handler.NewUserHandler(userService)
-
+func StartRouting() {
 	router := gin.Default()
 
-	routerWithoutToken := router.Group("/")
-	appConfig.Router = routerWithoutToken
-	InitNonTokenRoutes(appConfig, userHandler)
+	nonTokenGroup := router.Group("/")
+	NonTokenRoutes(nonTokenGroup)
 
-	// routerWithToken	 :=  AppRouting{
-	// 	Router: router.Group("/t"),
-	// }
-	// InitTokenRoutes(routerWithToken, &gormDb)
+	tokenGroup := router.Group("/t")
+	TokenRoutes(tokenGroup)
 
 	portString := os.Getenv("PORT")
 	router.Run(":" + portString)
