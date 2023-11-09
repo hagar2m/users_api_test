@@ -20,3 +20,7 @@ func IsValidPassword(password string) bool {
 func IsValidText(txt string) bool {
     return len(txt) > 5
 }
+
+func IsValidTitle(txt string) bool {
+    return len(txt) > 3
+}

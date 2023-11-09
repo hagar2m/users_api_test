@@ -12,7 +12,7 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-func ValidateToken(w http.ResponseWriter, r *http.Request) (bool, string, context.Context) {
+func ValidateToken(w http.ResponseWriter, r *http.Request) (error, context.Context) {
 	tokenString := getTokenString(w, r)
 	token, err := jwt.ParseWithClaims(tokenString, &models.Claims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -23,23 +23,22 @@ func ValidateToken(w http.ResponseWriter, r *http.Request) (bool, string, contex
 
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
-		return false, "Error: %v", nil
+		return  fmt.Errorf("Error: %v", err), nil
 	}
 
 	if !token.Valid {
 		w.WriteHeader(http.StatusUnauthorized)
-		return false, "Invalid token", nil
+		return  fmt.Errorf("Invalid token"), nil
 	}
 
 	if claims, ok := token.Claims.(*models.Claims); ok && token.Valid {
 		ctx := context.WithValue(r.Context(), "email", claims.Email)
-		ctx = context.WithValue(ctx, "userId", claims.UserId)
-		return true, "", ctx
-
+		ctx = context.WithValue(r.Context(), "userId", claims.UserId)
+		return nil, ctx
 	} else {
 		w.WriteHeader(http.StatusUnauthorized)
 		fmt.Printf("Invalid token claims\n")
-		return false, "Invalid token", nil
+		return  fmt.Errorf("nvalid token"), nil
 	}
 }
 

@@ -12,7 +12,7 @@ func ValidateEditing(usr *models.UserTable, updatedModel *models.UserTable) (boo
 	}
 
 	if updatedModel.Email != "" && !IsValidEmail(updatedModel.Email) {
-		return false, fmt.Errorf("Enter a valid mail")
+		return false, fmt.Errorf("enter a valid mail")
 	} else {
 		usr.Email = updatedModel.Email
 	}

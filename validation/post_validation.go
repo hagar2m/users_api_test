@@ -5,7 +5,7 @@ import (
 )
 
 func IsValidCreatePost(post models.Post) (bool, string) {
-	if !IsValidText(post.Body) || !IsValidText(post.Title) {
+	if !IsValidText(post.Body) || !IsValidTitle(post.Title) {
 		return false, "Enter a valid Content"
 	}
 

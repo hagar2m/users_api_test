@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CreateUserAPiHandler(ctx *gin.Context) {
+func CreateUserHandler(ctx *gin.Context) {
 	if newUser, err := CreateUserService(ctx); err != nil {
 		handler.ResponseWithError(ctx.Writer, http.StatusInternalServerError, err.Error())
 	} else {
@@ -15,7 +15,7 @@ func CreateUserAPiHandler(ctx *gin.Context) {
 	}
 }
 
-func SingInAPiHandler(ctx *gin.Context) {
+func SingInHandler(ctx *gin.Context) {
 	if newUser, err := SignInService(ctx); err != nil {
 		handler.ResponseWithError(ctx.Writer, http.StatusInternalServerError, err.Error())
 	} else {
@@ -41,6 +41,14 @@ func GetUserByIdhandler(ctx *gin.Context) {
 
 func EditUserhandler(ctx *gin.Context) {
 	if users, err := EditUserService(ctx); err != nil {
+		handler.ResponseWithError(ctx.Writer, http.StatusInternalServerError, err.Error())
+	} else {
+		handler.ResponseWithJson(ctx.Writer, http.StatusOK, users)
+	}
+}
+
+func DeleteUserHandler(ctx *gin.Context) {
+	if users, err := DeleteUserService(ctx); err != nil {
 		handler.ResponseWithError(ctx.Writer, http.StatusInternalServerError, err.Error())
 	} else {
 		handler.ResponseWithJson(ctx.Writer, http.StatusOK, users)
