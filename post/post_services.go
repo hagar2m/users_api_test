@@ -13,13 +13,13 @@ import (
 )
 
 func CreatePostService(context *gin.Context) (*models.Post, error) {
-	err, ctx := utils.ValidateToken(context.Writer, context.Request)
-	if err != nil {
-		return nil, &handler.HTTPError{Status: http.StatusBadRequest, Message: fmt.Sprintf("error parsing JSON: %v", err)}
-	}
+	// ctx, err := utils.ValidateToken(context.Writer, context.Request)
+	// if err != nil {
+	// 	return nil, &handler.HTTPError{Status: http.StatusBadRequest, Message: fmt.Sprintf("error parsing JSON: %v", err)}
+	// }
 	// user check //
-	userId := ctx.Value("userId").(uint)
-	_, err = user.GetUserByIdQuery(userId)
+	userId := context.Value("userId").(uint)
+	_, err := user.GetUserByIdQuery(userId)
 	if err != nil {
 		return nil, err
 	}

@@ -16,7 +16,7 @@ import (
 
 var DB *gorm.DB
 
-func LoadEnv() string {
+func GetDbUrlFromEnv() string {
 	godotenv.Load(".env")
 	return os.Getenv("DB_URL")
 }

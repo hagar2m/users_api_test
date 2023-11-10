@@ -12,7 +12,7 @@ func StartRouting() {
 	nonTokenGroup := router.Group("/")
 	NonTokenRoutes(nonTokenGroup)
 
-	tokenGroup := router.Group("/t")
+	tokenGroup := router.Group("/auth")
 	TokenRoutes(tokenGroup)
 
 	portString := os.Getenv("PORT")

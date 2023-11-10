@@ -1,44 +1,47 @@
 package utils
 
 import (
-	// "context"
-	"context"
 	"fmt"
 	"net/http"
 	"strings"
 	"time"
 
 	"com.test.users_api_test/models"
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 )
 
-func ValidateToken(w http.ResponseWriter, r *http.Request) (error, context.Context) {
-	tokenString := getTokenString(w, r)
-	token, err := jwt.ParseWithClaims(tokenString, &models.Claims{}, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+func AuthMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		tokenString := getTokenString(c.Writer, c.Request)
+		if tokenString == "" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header missing"})
+			c.Abort()
+			return
 		}
-		return models.JwtKey, nil
-	})
 
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		return  fmt.Errorf("Error: %v", err), nil
-	}
+		token, err := jwt.ParseWithClaims(tokenString, &models.Claims{}, func(token *jwt.Token) (interface{}, error) {
+			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+			}
+			return models.JwtKey, nil
+		})
 
-	if !token.Valid {
-		w.WriteHeader(http.StatusUnauthorized)
-		return  fmt.Errorf("Invalid token"), nil
-	}
+		if err != nil || !token.Valid {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+			c.Abort()
+			return
+		}
 
-	if claims, ok := token.Claims.(*models.Claims); ok && token.Valid {
-		ctx := context.WithValue(r.Context(), "email", claims.Email)
-		ctx = context.WithValue(r.Context(), "userId", claims.UserId)
-		return nil, ctx
-	} else {
-		w.WriteHeader(http.StatusUnauthorized)
-		fmt.Printf("Invalid token claims\n")
-		return  fmt.Errorf("nvalid token"), nil
+		if claims, ok := token.Claims.(*models.Claims); ok && token.Valid {
+			c.Set("email", claims.Email)
+			c.Set("userId", claims.UserId)
+		} else {
+			c.Writer.WriteHeader(http.StatusUnauthorized)
+			fmt.Printf("Invalid token claims\n")
+		}
+
+		c.Next()
 	}
 }
 

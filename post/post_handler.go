@@ -19,12 +19,4 @@ func CreatePostHandler(ctx *gin.Context) {
 	} else {
 		handler.ResponseWithJson(ctx.Writer, http.StatusOK, post)
 	}
-
-	//	 err != nil
-	//	 {
-	//		handler.ResponseWithError(ctx.Writer, http.StatusInternalServerError, err.Error())
-	//	} else {
-	//
-	//		handler.ResponseWithJson(ctx.Writer, http.StatusOK, newUser)
-	//	}
 }

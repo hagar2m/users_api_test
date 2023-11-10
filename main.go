@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	dbUrl := db.LoadEnv()
+	dbUrl := db.GetDbUrlFromEnv()
 	db.CreateNewSqlClient(dbUrl)
 	routing.StartRouting()
 }
