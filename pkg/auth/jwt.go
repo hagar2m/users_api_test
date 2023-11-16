@@ -1,4 +1,4 @@
-package utils
+package auth
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"com.test.users_api_test/models"
+	"com.test.users_api_test/api/models"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 )

@@ -1,0 +1,9 @@
+server:
+  host: localhost
+  port: 8080
+  
+database:
+  username: admin
+  password: 12345678
+  dbname: mydb
+  url: root:12345678@(127.0.0.1:3306)/sys?parseTime=true

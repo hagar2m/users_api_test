@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 
-	"com.test.users_api_test/models"
-	"com.test.users_api_test/utils"
-	"com.test.users_api_test/validation"
+	"com.test.users_api_test/api/models"
+	conventer "com.test.users_api_test/pkg/converter"
+	"com.test.users_api_test/pkg/validation"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,7 +17,7 @@ func CreatePostService(context *gin.Context) (*models.Post, error) {
 
 	// post check //
 	post := models.Post{}
-	error := utils.ParseRequestBody(context, &post)
+	error := conventer.ParseRequestBody(context, &post)
 	if error != nil {
 		return nil, errors.New(fmt.Sprintf("error parsing JSON: %v", error))
 	}

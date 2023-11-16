@@ -3,7 +3,7 @@ package validation
 import (
 	"fmt"
 
-	"com.test.users_api_test/models"
+	"com.test.users_api_test/api/models"
 )
 
 func ValidateEditing(usr *models.UserTable, updatedModel *models.UserTable) (bool, error) {

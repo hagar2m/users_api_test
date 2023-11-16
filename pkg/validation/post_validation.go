@@ -1,7 +1,7 @@
 package validation
 
 import (
-	"com.test.users_api_test/models"
+	"com.test.users_api_test/api/models"
 )
 
 func IsValidCreatePost(post models.Post) (bool, string) {

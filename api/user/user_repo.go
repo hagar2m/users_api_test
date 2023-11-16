@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"com.test.users_api_test/db"
-	"com.test.users_api_test/models"
+	"com.test.users_api_test/api/models"
 )
 
 func CreateUserQuery(user *models.UserTable) (*models.UserTable, error) {

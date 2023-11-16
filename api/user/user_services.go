@@ -3,19 +3,17 @@ package user
 import (
 	"fmt"
 
-	"com.test.users_api_test/models"
-	"com.test.users_api_test/utils"
+	"com.test.users_api_test/api/models"
+	"com.test.users_api_test/pkg/auth"
+	conventer "com.test.users_api_test/pkg/converter"
+	"com.test.users_api_test/pkg/validation"
 	"github.com/gin-gonic/gin"
-
-	"com.test.users_api_test/validation"
 )
-
-
 
 func CreateUserService(context *gin.Context) (*models.UserTable, error) {
 	user := &models.UserTable{}
 
-	if err := utils.ParseRequestBody(context, user); err != nil {
+	if err := conventer.ParseRequestBody(context, user); err != nil {
 		return nil, fmt.Errorf("error parsing JSON: %v", err)
 	}
 
@@ -32,7 +30,7 @@ func CreateUserService(context *gin.Context) (*models.UserTable, error) {
 
 func SignInService(context *gin.Context) (*models.ResponseModel, error) {
 	loginUserData := models.UserTable{}
-	error := utils.ParseRequestBody(context, &loginUserData)
+	error := conventer.ParseRequestBody(context, &loginUserData)
 	if error != nil {
 		return nil, fmt.Errorf("error parsing JSON: %v", error)
 	}
@@ -46,7 +44,7 @@ func SignInService(context *gin.Context) (*models.ResponseModel, error) {
 		return nil, err
 	}
 
-	tokenString, err := utils.GenerateToken(*user)
+	tokenString, err := auth.GenerateToken(*user)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +74,7 @@ func GetAllUsersService(ctx *gin.Context) (*models.ResponseModel, error) {
 }
 
 func GetUserByIdService(ctx *gin.Context) (*models.ResponseModel, error) {
-	idUint, err := utils.ConvertStringToUint(ctx.Param("id"))
+	idUint, err := conventer.ConvertStringToUint(ctx.Param("id"))
 	if err != nil {
 		return nil, err
 	}
@@ -92,13 +90,13 @@ func GetUserByIdService(ctx *gin.Context) (*models.ResponseModel, error) {
 }
 
 func EditUserService(ctx *gin.Context) (*models.ResponseModel, error) {
-	idUint, err := utils.ConvertStringToUint(ctx.Param("id"))
+	idUint, err := conventer.ConvertStringToUint(ctx.Param("id"))
 	if err != nil {
 		return nil, err
 	}
 
 	updatedModel := models.UserTable{}
-	error := utils.ParseRequestBody(ctx, &updatedModel)
+	error := conventer.ParseRequestBody(ctx, &updatedModel)
 	if error != nil {
 		return nil, fmt.Errorf("error parsing JSON: %v", error)
 	}
@@ -130,7 +128,7 @@ func EditUserService(ctx *gin.Context) (*models.ResponseModel, error) {
 }
 
 func DeleteUserService(ctx *gin.Context) (*models.ResponseModel, error) {
-	idUint, err := utils.ConvertStringToUint(ctx.Param("id"))
+	idUint, err := conventer.ConvertStringToUint(ctx.Param("id"))
 	if err != nil {
 		return nil, err
 	}

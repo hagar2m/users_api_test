@@ -1,9 +1,9 @@
 package routing
 
 import (
-	"com.test.users_api_test/post"
-	"com.test.users_api_test/user"
-	"com.test.users_api_test/utils"
+	"com.test.users_api_test/api/post"
+	"com.test.users_api_test/api/user"
+	"com.test.users_api_test/pkg/auth"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,7 +13,7 @@ func NonTokenRoutes(r *gin.RouterGroup) {
 }
 
 func TokenRoutes(r *gin.RouterGroup) {
-	r.Use(utils.AuthMiddleware())
+	r.Use(auth.AuthMiddleware())
 
 	r.GET("/users", user.GetAllUsersHandler)
 	r.GET("/users/:id", user.GetUserByIdhandler)
