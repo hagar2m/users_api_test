@@ -10,12 +10,7 @@ import (
 func CreatePostHandler(ctx *gin.Context) {
 	post, err := CreatePostService(ctx)
 	if err != nil {
-		httpError, ok := err.(*handler.HTTPError)
-		if ok {
-			ctx.JSON(httpError.Status, gin.H{"error": httpError.Message})
-		} else {
-			handler.ResponseWithError(ctx.Writer, http.StatusInternalServerError, err.Error())
-		}
+		handler.ResponseWithError(ctx.Writer, http.StatusBadRequest, err.Error())
 	} else {
 		handler.ResponseWithJson(ctx.Writer, http.StatusOK, post)
 	}

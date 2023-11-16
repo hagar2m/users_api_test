@@ -1,12 +1,9 @@
 package main
 
 import (
-	"com.test.users_api_test/db"
-	"com.test.users_api_test/routing"
+	"com.test.users_api_test/server"
 )
 
 func main() {
-	dbUrl := db.GetDbUrlFromEnv()
-	db.CreateNewSqlClient(dbUrl)
-	routing.StartRouting()
+	server.Start()
 }
