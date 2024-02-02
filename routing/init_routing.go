@@ -1,8 +1,7 @@
 package routing
 
 import (
-	"os"
-
+	"com.test.users_api_test/configs"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,6 +14,6 @@ func StartRouting() {
 	tokenGroup := router.Group("/auth")
 	TokenRoutes(tokenGroup)
 
-	portString := os.Getenv("PORT")
+	portString := configs.GetPort()
 	router.Run(":" + portString)
 }

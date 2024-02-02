@@ -11,7 +11,7 @@ func LoadViber() {
 	viper.SetConfigName("config")
 
 	// Set the path to look for the configurations file
-	viper.AddConfigPath(".")
+	viper.AddConfigPath("./configs")
 
 	// Enable VIPER to read Environment Variables
 	viper.AutomaticEnv()
