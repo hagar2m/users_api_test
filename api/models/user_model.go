@@ -15,7 +15,7 @@ type Tabler interface {
 	TableName() string
 }
 
-// TableName overrides the table name used by User to `profiles`
+// TableName overrides the table name to `users` insted of `UserTable`
 func (UserTable) TableName() string {
 	return "users"
 }
