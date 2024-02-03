@@ -25,6 +25,22 @@ func LoadViber() {
 func GetDatabaseUrl() string {
 	return viper.GetString("database.url")
 }
-func GetPort() string {
+func GetServerPort() string {
 	return viper.GetString("server.port")
+}
+func GetDBPort() string {
+	return viper.GetString("database.db_port")
+}
+
+func GetDBHost() string {
+	return viper.GetString("database.db_host")
+}
+func GetDBPassword() string {
+	return viper.GetString("database.password")
+}
+func GetDBName() string {
+	return viper.GetString("database.dbname")
+}
+func GetDBUsername() string {
+	return viper.GetString("database.username")
 }

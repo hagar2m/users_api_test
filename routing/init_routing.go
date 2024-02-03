@@ -14,6 +14,6 @@ func StartRouting() {
 	tokenGroup := router.Group("/auth")
 	TokenRoutes(tokenGroup)
 
-	portString := configs.GetPort()
+	portString := configs.GetServerPort()
 	router.Run(":" + portString)
 }

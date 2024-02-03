@@ -10,8 +10,7 @@ import (
 func Start() {
 	configs.LoadViber()
 
-	dbUrl := configs.GetDatabaseUrl()
-	db.CreateNewSqlClient(dbUrl)
+	db.CreateNewSqlClient()
 
 	routing.StartRouting()
 
