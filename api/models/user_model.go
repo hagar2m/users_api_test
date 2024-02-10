@@ -5,9 +5,9 @@ import "time"
 type UserTable struct {
 	ID        uint      `gorm:"primaryKey;autoIncrement"`
 	Name      string    `json:"name"`
-	Email     string    `json:"email"`
+	Email     string    `json:"email" gorm:"type:varchar(255)"`
 	Password  string    `json:"password"`
-	CreatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP"`
+	CreatedAt time.Time `gorm:"default:'2024-02-09 16:00:00'"`
 }
 
 

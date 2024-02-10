@@ -33,15 +33,17 @@ func CreateNewSqlClient() {
 
 	// root:12345678@(127.0.0.1:3306)/sys
 	dsn := fmt.Sprintf("%s/%s?charset=utf8&parseTime=True&loc=Local", createDBDsn, DBNAME)
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+	db, error := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	})
 
-	db.AutoMigrate(&models.UserTable{}, &models.Post{})
-
-	if err != nil {
+	if error != nil {
 		log.Fatal("can't connect to database", err)
 		panic(err.Error())
+	}
+	err = db.AutoMigrate(&models.UserTable{}, &models.Post{})
+	if err != nil {
+		log.Fatal("error in AutoMigrate with database", err)
 	}
 
 	DB = db

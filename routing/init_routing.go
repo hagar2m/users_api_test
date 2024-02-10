@@ -1,6 +1,7 @@
 package routing
 
 import (
+	"com.test.users_api_test/api/constants"
 	"com.test.users_api_test/configs"
 	"github.com/gin-gonic/gin"
 )
@@ -13,6 +14,8 @@ func StartRouting() {
 
 	tokenGroup := router.Group("/auth")
 	TokenRoutes(tokenGroup)
+
+	router.Static(constants.UploadRoot, constants.UploadPath)
 
 	portString := configs.GetServerPort()
 	router.Run(":" + portString)
