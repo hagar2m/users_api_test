@@ -36,6 +36,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		if claims, ok := token.Claims.(*models.Claims); ok && token.Valid {
 			c.Set("email", claims.Email)
 			c.Set("userId", claims.UserId)
+			c.Set("name", claims.Name)
 		} else {
 			c.Writer.WriteHeader(http.StatusUnauthorized)
 			fmt.Printf("Invalid token claims\n")
@@ -57,6 +58,7 @@ func GenerateToken(loginUserData models.UserTable) (string, error) {
 	claims := &models.Claims{
 		Email:  loginUserData.Email,
 		UserId: loginUserData.ID,
+		Name:   loginUserData.Name,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime,
 		},

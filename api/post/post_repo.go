@@ -3,12 +3,11 @@ package post
 import (
 	"time"
 
-	"com.test.users_api_test/db"
 	"com.test.users_api_test/api/models"
+	"com.test.users_api_test/db"
 )
 
-func CreatePostQuery(post *models.Post, userId uint) (*models.Post, error) {
-	post.UserID = userId
+func CreatePostQuery(post *models.Post) (*models.Post, error) {
 	post.CreatedAt = time.Now()
 	result := db.DB.Create(&post)
 	if result.Error != nil {

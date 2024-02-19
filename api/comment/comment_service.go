@@ -1,4 +1,4 @@
-package post
+package comment
 
 import (
 	"errors"
@@ -12,10 +12,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CreatePostService(context *gin.Context) (*models.Post, error) {
-
+func CreateCommentService(context *gin.Context) (*models.Comment, error) {
 	// user check //
 	userId := context.Value("userId").(uint)
+	userName := context.Value("name").(string)
 
 	err := context.Request.ParseMultipartForm(5 << 20) // 5 MB max file size
 	if err != nil {
@@ -23,11 +23,10 @@ func CreatePostService(context *gin.Context) (*models.Post, error) {
 	}
 
 	// Validate input
-	input := models.Post{}
+	input := models.Comment{}
 	if err := context.ShouldBind(&input); err != nil {
 		return nil, errors.New(fmt.Sprintf("%s", err))
 	}
-
 	// Get the uploaded file
 	file, fileHeader, err := context.Request.FormFile("image")
 	if err != nil {
@@ -37,20 +36,21 @@ func CreatePostService(context *gin.Context) (*models.Post, error) {
 
 	imgName, _ := handler.UploadFileHandler(file, fileHeader)
 	imgUrl := configs.GetServerHost() + ":" + configs.GetServerPort() + constants.UploadRoot + "/" + imgName
-	post := models.Post{
-		Title: input.Title,
-		Body:  input.Body,
-		Image: imgUrl,
-		UserID: userId,
+	comment := models.Comment{
+		Body:     input.Body,
+		PostID:   input.PostID,
+		Image:    imgUrl,
+		UserName: userName,
+		UserID:   userId,
 	}
 
-	if isValid, errMessage := validation.IsValidCreatePost(post); !isValid {
+	if isValid, errMessage := validation.IsValidCreateComment(comment); !isValid {
 		return nil, fmt.Errorf(errMessage)
 	}
-	// Create post
-	createdPost, errr := CreatePostQuery(&post)
+	// Create comment
+	createdComment, errr := CreateCommentQuery(&comment)
 	if errr != nil {
 		return nil, errr
 	}
-	return createdPost, nil
+	return createdComment, nil
 }
