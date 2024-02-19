@@ -4,7 +4,9 @@ import (
 	"errors"
 	"fmt"
 
+	"com.test.users_api_test/api/constants"
 	"com.test.users_api_test/api/models"
+	"com.test.users_api_test/configs"
 	"com.test.users_api_test/handler"
 	"com.test.users_api_test/pkg/validation"
 	"github.com/gin-gonic/gin"
@@ -15,7 +17,7 @@ func CreatePostService(context *gin.Context) (*models.Post, error) {
 	// user check //
 	userId := context.Value("userId").(uint)
 
-	err := context.Request.ParseMultipartForm(10 << 20) // 10 MB max file size
+	err := context.Request.ParseMultipartForm(5 << 20) // 5 MB max file size
 	if err != nil {
 		return nil, err
 	}
@@ -33,8 +35,8 @@ func CreatePostService(context *gin.Context) (*models.Post, error) {
 	}
 	defer file.Close()
 
-	imgUrl, _ := handler.UploadFileHandler(file, fileHeader)
-
+	imgName, _ := handler.UploadFileHandler(file, fileHeader)
+	imgUrl := configs.GetServerHost() + ":" + configs.GetServerPort() + constants.UploadRoot + "/" + imgName
 	post := models.Post{
 		Title: input.Title,
 		Body:  input.Body,

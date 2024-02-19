@@ -28,6 +28,9 @@ func GetDatabaseUrl() string {
 func GetServerPort() string {
 	return viper.GetString("server.port")
 }
+func GetServerHost() string {
+	return viper.GetString("server.host")
+}
 func GetDBPort() string {
 	return viper.GetString("database.db_port")
 }

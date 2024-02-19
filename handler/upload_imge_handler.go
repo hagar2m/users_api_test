@@ -23,7 +23,6 @@ func UploadFileHandler(file multipart.File, fileHeader *multipart.FileHeader) (s
 	imageName := timestamp + "_" + fileHeader.Filename
 
 	// Create a new file on the server to copy the uploaded file to
-	// Here you may want to use a file storage service like AWS S3, but for simplicity, we'll just save it locally
 	uploadedFilePath := uploadPath + "/" + imageName
 	newFile, err := os.Create(uploadedFilePath)
 	if err != nil {
@@ -36,5 +35,5 @@ func UploadFileHandler(file multipart.File, fileHeader *multipart.FileHeader) (s
 	if err != nil {
 		return "", err
 	}
-	return uploadedFilePath, nil
+	return imageName, nil
 }
