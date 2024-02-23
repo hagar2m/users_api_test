@@ -5,7 +5,7 @@ import (
 
 	"com.test.users_api_test/api/models"
 	"com.test.users_api_test/pkg/auth"
-	conventer "com.test.users_api_test/pkg/converter"
+	"com.test.users_api_test/pkg/conventer"
 	"com.test.users_api_test/pkg/validation"
 	"github.com/gin-gonic/gin"
 )

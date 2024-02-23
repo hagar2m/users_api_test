@@ -23,7 +23,7 @@ func TokenRoutes(r *gin.RouterGroup) {
 	r.POST("/createPost", post.CreatePostHandler)
 	r.POST("/createComment", comment.CreateCommentHandler)
 	r.GET("/comment/:id", comment.GetCommentByIDHandler)
-
+	r.GET("/post/:id", post.GetPostCommentsHandler)
 }
 
 // 	router.Get("/users/{id:[0-9]+}", db.HandlerGetUserById

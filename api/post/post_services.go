@@ -9,6 +9,7 @@ import (
 	"com.test.users_api_test/configs"
 	"com.test.users_api_test/handler"
 	"com.test.users_api_test/pkg/validation"
+	"com.test.users_api_test/pkg/conventer"
 	"github.com/gin-gonic/gin"
 )
 
@@ -53,4 +54,17 @@ func CreatePostService(context *gin.Context) (*models.Post, error) {
 		return nil, errr
 	}
 	return createdPost, nil
+}
+
+func GetPostCommentsService(context *gin.Context) (*models.Post, error) {
+	id, err := conventer.ConvertStringToInt(context.Param("id"))
+	if err != nil {
+		return nil, err
+	}
+	post, err := GetPostCommentsByIdQuery(id)
+	if err != nil {
+		return nil, err
+	}
+	
+	return post, nil
 }

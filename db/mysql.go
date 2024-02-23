@@ -41,7 +41,7 @@ func CreateNewSqlClient() {
 		log.Fatal("can't connect to database", err)
 		panic(err.Error())
 	}
-	err = db.AutoMigrate(&models.UserTable{}, &models.Post{}, &models.Comment{})
+	err = db.AutoMigrate(&models.UserTable{}, &models.Post{}, &models.Comment{},)
 	if err != nil {
 		log.Fatal("error in AutoMigrate with database", err)
 	}

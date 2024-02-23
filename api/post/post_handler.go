@@ -15,3 +15,12 @@ func CreatePostHandler(ctx *gin.Context) {
 		handler.ResponseWithJson(ctx.Writer, http.StatusOK, post)
 	}
 }
+
+func GetPostCommentsHandler(ctx *gin.Context) {
+	post, err := GetPostCommentsService(ctx)
+	if err != nil {
+		handler.ResponseWithError(ctx.Writer, http.StatusBadRequest, err.Error())
+	} else {
+		handler.ResponseWithJson(ctx.Writer, http.StatusOK, post)
+	}
+}

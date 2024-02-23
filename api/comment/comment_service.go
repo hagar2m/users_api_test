@@ -9,7 +9,7 @@ import (
 	"com.test.users_api_test/api/models"
 	"com.test.users_api_test/configs"
 	"com.test.users_api_test/handler"
-	conventer "com.test.users_api_test/pkg/converter"
+	"com.test.users_api_test/pkg/conventer"
 	"com.test.users_api_test/pkg/validation"
 	"github.com/gin-gonic/gin"
 )
@@ -81,18 +81,14 @@ func createCommentFromInput(userId uint, userName string, input models.Comment) 
 	return createdComment, nil
 }
 
-func GetCommentByIdService(ctx *gin.Context) (*models.ResponseModel, error) {
+func GetCommentByIdService(ctx *gin.Context) (*models.Comment, error) {
 	id, err := conventer.ConvertStringToInt(ctx.Param("id"))
 	if err != nil {
 		return nil, err
 	}
-	user, err := GetCommentByIdQuery(id)
+	comment, err := GetCommentByIdQuery(id)
 	if err != nil {
 		return nil, err
 	}
-	responseModel := models.ResponseModel{
-		Message: "Success",
-		Data:    user,
-	}
-	return &responseModel, nil
+	return comment, nil
 }

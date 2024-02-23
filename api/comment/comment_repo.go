@@ -17,6 +17,29 @@ func CreateCommentQuery(comment *models.Comment) (*models.Comment, error) {
 
 	return comment, nil
 }
+func GetListOfCommentByPostIdQuery(id int) ([]models.Comment, error) {
+	//1- Get the post comments
+	var postCommentsList []models.Comment
+	result := db.DB.Where("post_id = ?", id).Where("parent_id IS NULL").Find(&postCommentsList)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	var newCommentsList []models.Comment
+	for _, postComment := range postCommentsList {
+		// Get sub-comments for the current post comment
+		var subComments []models.Comment
+		result2 := db.DB.Where("parent_id = ?", postComment.ID).Find(&subComments)
+		if result2.Error == nil {
+			// Assign sub-comments to a new copy of postComment
+			newComment := postComment
+			newComment.Comments = make([]models.Comment, len(subComments))
+			copy(newComment.Comments, subComments)
+
+			newCommentsList = append(newCommentsList, newComment)
+		}
+	}
+	return newCommentsList, nil
+}
 
 func GetCommentByIdQuery(id int) (*models.Comment, error) {
 	//1- Get the parent comments
