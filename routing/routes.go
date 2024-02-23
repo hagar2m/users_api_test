@@ -22,6 +22,7 @@ func TokenRoutes(r *gin.RouterGroup) {
 	r.DELETE("/users/:id", user.DeleteUserHandler)
 	r.POST("/createPost", post.CreatePostHandler)
 	r.POST("/createComment", comment.CreateCommentHandler)
+	r.GET("/comment/:id", comment.GetCommentByIDHandler)
 
 }
 

@@ -15,3 +15,11 @@ func CreateCommentHandler(ctx *gin.Context) {
 		handler.ResponseWithJson(ctx.Writer, http.StatusOK, post)
 	}
 }
+func GetCommentByIDHandler(ctx *gin.Context) {
+	post, err := GetCommentByIdService(ctx)
+	if err != nil {
+		handler.ResponseWithError(ctx.Writer, http.StatusBadRequest, err.Error())
+	} else {
+		handler.ResponseWithJson(ctx.Writer, http.StatusOK, post)
+	}
+}
