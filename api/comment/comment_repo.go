@@ -17,19 +17,18 @@ func CreateCommentQuery(comment *models.Comment) (*models.Comment, error) {
 
 	return comment, nil
 }
-func GetListOfCommentByPostIdQuery(id int) ([]models.Comment, error) {
+func GetListOfCommentsByPostIdQuery(id int) ([]models.Comment, error) {
 	//1- Get the post comments
-	var postCommentsList []models.Comment
-	result := db.DB.Where("post_id = ?", id).Where("parent_id IS NULL").Find(&postCommentsList)
-	if result.Error != nil {
-		return nil, result.Error
+	postCommentsList, err := GetPerantCommentsOfPost(id)
+	if err != nil {
+		return nil, err
 	}
 	var newCommentsList []models.Comment
 	for _, postComment := range postCommentsList {
 		// Get sub-comments for the current post comment
 		var subComments []models.Comment
-		result2 := db.DB.Where("parent_id = ?", postComment.ID).Find(&subComments)
-		if result2.Error == nil {
+		result := db.DB.Where("parent_id = ?", postComment.ID).Find(&subComments)
+		if result.Error == nil {
 			// Assign sub-comments to a new copy of postComment
 			newComment := postComment
 			newComment.Comments = make([]models.Comment, len(subComments))
@@ -59,4 +58,18 @@ func GetCommentByIdQuery(id int) (*models.Comment, error) {
 	}
 
 	return &parentComment, nil
+}
+
+func GetPerantCommentsOfPost(id int) ([]models.Comment, error) {
+	var postCommentsList []models.Comment
+	result := db.DB.Where("post_id = ?", id).Where("parent_id IS NULL").Find(&postCommentsList)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return nil, fmt.Errorf("post not found")
+	}
+
+	return postCommentsList, nil
 }

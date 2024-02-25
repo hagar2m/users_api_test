@@ -29,7 +29,7 @@ func GetPostCommentsByIdQuery(id int) (*models.Post, error) {
 		return nil, fmt.Errorf("user not found")
 	}
 	//2- get Comments of this Post
-	commentsList, err := comment.GetListOfCommentByPostIdQuery(id)
+	commentsList, err := comment.GetListOfCommentsByPostIdQuery(id)
 	if err != nil {
 		return nil, err
 	}
